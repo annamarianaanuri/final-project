@@ -1,0 +1,4 @@
+,,,,,
+,plan_id,electricity_vendor_name,electricity_plan_name,monthly_price,kwh_price
+,1,Example Vendor 1,Example Plan 1,0,0.10
+,2,Example Vendor 2,Example Plan A,1,0.09

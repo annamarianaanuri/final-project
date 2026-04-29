@@ -1,5 +1,5 @@
-import streamlit as st
-import pandas as pd
-import duckdb
-import matplotlib.pyplot as plt
-import seaborn as sns
+streamlit
+pandas
+duckdb
+matplotlib.pyplot
+seaborn

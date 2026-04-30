@@ -12,11 +12,9 @@ from pathlib import Path
 st.set_page_config(page_title="Energy consumption", layout="wide")
 st.title("Household energy consumption")
 
-BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR/ "DataSources" / "real_electricity_consumption_sorted.csv"
+ROOT_DIR = Path(__file__).resolve().parents[2]
+DATA_PATH = ROOT_DIR / "DataSources" / "real_electricity_consumption_sorted.csv"
 
-# runs the df once / NEEDS TO BE THE FIRST COMMAND ON PAGE
-@st.cache_data
 # reads df in
 def load_data():
     household_consumption = pd.read_csv(DATA_PATH) 

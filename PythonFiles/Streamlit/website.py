@@ -16,7 +16,7 @@ st.title("Household energy consumption")
 
 # reads df in
 def load_data():
-    household_consumption = pd.read_csv("../../DataSources/real_electricity_consumption_sorted.csv") 
+    household_consumption = pd.read_csv("real_electricity_consumption_sorted.csv") 
     # converts timestamp from str to datetime format 
     household_consumption["timestamp"] = pd.to_datetime(household_consumption["timestamp"], format='%d.%m.%Y %H:%M:%S')
     # extracts year / month / day / hour from timestamp 

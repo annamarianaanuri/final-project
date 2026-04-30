@@ -89,6 +89,13 @@ std = values.std()
 threshold = mean + 0.75 * std
 peaks = values >= threshold   
 
+# defines diplayed values as kpi-s
+kpis = {
+    "total_points": len(filtered),
+    "peak_slot": values.idxmax(),
+    "max_value": values.max(),
+    "threshold": threshold,}
+
 # adds a colour for below peak value and peak value
 NORMAL_COLOR = "#2475B0"
 PEAK_COLOR   = "#DC3C28"
@@ -109,7 +116,7 @@ def slot_to_label(slot, view):
     if view == "Month":
         return MONTH_NAMES[int(slot) - 1]
 # converts hour format from hours to hours & minutes (incl 15/30/45)
-    if view == "Hour":
+    if view == "Time":
         hour = int(slot) // 4
         minute = (int(slot) % 4) * 15
         return f"{hour:02d}:{minute:02d}"
@@ -122,12 +129,13 @@ x_pos = list(range(len(values)))
 
 # st.columns splits the page into equal-width columns side by side
 # st.metric renders a labeled number card
+peak_slot_label = slot_to_label(kpis["peak_slot"], view)
 peak_slot_label = slot_to_label(values.idxmax(), view)
 n_peaks = int(peaks.sum())
 
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Data points", f"{len(filtered):,}")
-col2.metric("Peak time", f"{peak_slot_label}")
-col3.metric("Highest average usage", f"{values.max():,.0f} kWh")
-col4.metric("Peak cutoff", f"{threshold:,.0f} kWh")
+col1.metric("Selections included", f"{kpis['total_points']:,}")
+col2.metric("Most active period", peak_slot_label)
+col3.metric("Highest usage level", f"{kpis['max_value']:.2f} kWh")
+col4.metric("High usage threshold", f"{kpis['threshold']:.2f} kWh")
 

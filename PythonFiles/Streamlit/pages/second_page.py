@@ -21,8 +21,8 @@ st.write(
 
 @st.cache_data
 def load_data():
-    folder = Path(r"C:\Users\jaana\Documents\final-project\DataSources")
-    data = pd.read_csv(folder / "price_calculated_draft.csv")
+    folder = Path(r"https://raw.githubusercontent.com/annamarianaanuri/final-project/refs/heads/main/DataSources/price_calculated_draft.csv")
+    data = pd.read_csv(folder)
 
     if "Unnamed: 0" in data.columns:
         data = data.drop(columns=["Unnamed: 0"])

@@ -1,5 +1,6 @@
 streamlit
 pandas
 duckdb
+numpy
 matplotlib
 seaborn

@@ -1,11 +1,9 @@
 # libraries and add-ons needed
 import streamlit as st
 import pandas as pd
-import duckdb
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-import seaborn as sns
 from pathlib import Path
 
 # sets the page title
@@ -15,7 +13,8 @@ st.title("Household energy consumption")
 ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_PATH = ROOT_DIR / "DataSources" / "real_electricity_consumption_sorted.csv"
 
-# reads df in
+# clears cache in every load and reads df in
+@st.cache_data
 def load_data():
     household_consumption = pd.read_csv(DATA_PATH) 
     # converts timestamp from str to datetime format 
@@ -87,7 +86,7 @@ values = filtered.groupby(col)["consumption_kwh"].mean().sort_index()
 # 0.75 is the sensitivity — higher = fewer peaks, lower = more peaks.
 mean = values.mean()
 std = values.std()
-threshold = mean + 0.75 * std
+threshold = np.percentile(values, 75)
 peaks = values >= threshold   
 
 # defines diplayed values as kpi-s
@@ -118,9 +117,7 @@ def slot_to_label(slot, view):
         return MONTH_NAMES[int(slot) - 1]
 # converts hour format from hours to hours & minutes (incl 15/30/45)
     if view == "Time":
-        hour = int(slot) // 4
-        minute = (int(slot) % 4) * 15
-        return f"{hour:02d}:{minute:02d}"
+        return f"{int(slot):02d}:00"
 
     return str(int(slot))
 
@@ -134,7 +131,7 @@ peak_slot_label = slot_to_label(kpis["peak_slot"], view)
 peak_slot_label = slot_to_label(values.idxmax(), view)
 n_peaks = int(peaks.sum())
 
-# 
+
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Selections included", f"{kpis['total_points']:,}")
 col2.metric("Most active period", peak_slot_label)
@@ -142,12 +139,6 @@ col3.metric("Highest usage level", f"{kpis['max_value']:.2f} kWh")
 col4.metric("High usage threshold", f"{kpis['threshold']:.2f} kWh")
 
 fig, ax = plt.subplots(figsize=(12, 5)) 
-
-if view == "Time":
-    ax.axvspan(-0.5, 6.5,  alpha=0.07, color="blue",   label="Nighttime")
-    ax.axvspan(6.5,  21.5, alpha=0.06, color="yellow", label="Daytime")
-    ax.axvspan(21.5, 23.5, alpha=0.07, color="blue") 
-
 
 ax.axhline(
     threshold,
@@ -174,24 +165,21 @@ ax.set_xticklabels(x_labels, fontsize=9)
 # 9f. Axis and chart labels
 ax.set_xlabel(view, fontsize=11)
 ax.set_ylabel("Avg consumption (kWh)", fontsize=11)
+
+# sets the y axis starting point
+ax.set_ylim(bottom=0)
  
 # Build a title that reflects the active filters
 hh_label = "All households" if len(sel_households) == len(all_households) \
            else f"{len(sel_households)} household(s)"
 ax.set_title(f"Average consumption by {view.lower()} — {hh_label}", fontsize=13)
  
-# 9g. Custom legend — manually build entries so we control exactly what appears
+# custom legend — manually build entries so we control exactly what appears
 legend_entries = [
     mpatches.Patch(color=NORMAL_COLOR, label="Normal"),
-    mpatches.Patch(color=PEAK_COLOR,   label=f"Peak (>{threshold:,.0f} kWh)"),
-]
-if view == "Hour":
-    legend_entries += [
-        mpatches.Patch(color="yellow", alpha=0.4, label="Daytime (7–22)"),
-        mpatches.Patch(color="blue",   alpha=0.3, label="Nighttime"),
-    ]
+    mpatches.Patch(color=PEAK_COLOR, label=f"Peak (top 25% >{threshold:,.2f} kWh)")]
 ax.legend(handles=legend_entries, loc="upper left", fontsize=9)
- 
+
 plt.tight_layout()
  
 # 10. Render the matplotlib figure inside Streamlit

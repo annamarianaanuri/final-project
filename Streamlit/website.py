@@ -1,187 +1,162 @@
-# libraries and add-ons needed
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 from pathlib import Path
 
-# sets the page title
-st.set_page_config(page_title="Energy consumption", layout="wide")
-st.title("Household energy consumption")
+st.set_page_config(
+    page_title="Consumption Analysis",
+    layout="wide",
+    initial_sidebar_state="expanded")
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-DATA_PATH = ROOT_DIR / "DataSources" / "real_electricity_consumption_sorted.csv"
+st.title("📊 Consumption Analysis")
+st.markdown("---")
 
-# clears cache in every load and reads df in
+# Load data
 @st.cache_data
 def load_data():
-    household_consumption = pd.read_csv(DATA_PATH) 
-    # converts timestamp from str to datetime format 
-    household_consumption["timestamp"] = pd.to_datetime(household_consumption["timestamp"], format='%d.%m.%Y %H:%M:%S')
-    # extracts year / month / day / hour from timestamp 
-    household_consumption["year"] = household_consumption["timestamp"].dt.year
-    household_consumption["month"] = household_consumption["timestamp"].dt.month
-    household_consumption["day"] = household_consumption["timestamp"].dt.day
-    household_consumption["hour"] = household_consumption["timestamp"].dt.hour
- 
-    return household_consumption
+    data_path = Path(__file__).parent.parent / 'Data Sources' / 'consumption_df_enriched.csv'
+    df = pd.read_csv(data_path)
+    df['date'] = pd.to_datetime(df['date'])
+    
+    # Convert to categorical with custom order
+    df['client_segment'] = pd.Categorical(
+        df['client_segment'].str.upper(),
+        categories=['S', 'M', 'L', 'XL'],
+        ordered=True
+    )
+    
+    df['season'] = pd.Categorical(
+        df['season'],
+        categories=['Spring', 'Summer', 'Fall', 'Winter'],
+        ordered=True
+    )
+    
+    day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    df['day_of_week'] = pd.Categorical(
+        df['day_of_week'],
+        categories=day_order,
+        ordered=True
+    )
+    
+    return df
 
-# uses given df 
-household_consumption = load_data()
+df = load_data()
 
-# finds unique values from columns
-all_households = sorted(household_consumption["household_id"].unique())
-all_years = sorted(household_consumption["year"].unique())
-all_months = sorted(household_consumption["month"].unique())
-all_days = sorted(household_consumption["day"].unique())
-all_hours = sorted(household_consumption["hour"].unique())
-
-# adds a subtitle for the filters
-st.subheader("Filters")
-
-# defines the amount of filters and their positioning
-fc1, fc2, fc3, fc4, fc5 = st.columns(5)
-
-# defines the functions of each filter - multiple select & by default all selected
-sel_households = fc1.multiselect("Household", options=all_households, default=all_households)
-sel_years = fc2.multiselect("Year", options=all_years, default=all_years)
-sel_months = fc3.multiselect("Month", options=all_months, default=all_months,
-    # defines the selection as text for months
-    format_func=lambda m: [
-        "January","February","March","April","May","June","July","August","September",
-        "October","November","December"][m - 1],)
-sel_days = fc4.multiselect("Day", options=all_days, default=all_days)
-sel_hours = fc5.multiselect("Hour", options=all_hours, default=all_hours)
-
-# defines a filters' function: keep only the row(s) matching the filter(s)
-# one or many filters can be used
-filtered = household_consumption.copy()
-if sel_households: filtered = filtered[filtered["household_id"].isin(sel_households)]
-if sel_years: filtered = filtered[filtered["year"].isin(sel_years)]
-if sel_months: filtered = filtered[filtered["month"].isin(sel_months)]
-if sel_days: filtered = filtered[filtered["day"].isin(sel_days)]
-if sel_hours: filtered = filtered[filtered["hour"].isin(sel_hours)]
-
-# if no rows match selected filter
-if filtered.empty:
-    st.warning("No data matches the current filters.")
-    st.stop()
-
-# OPTIONAL - adds a filter for x axis
-view = st.radio("View by", options=["Year", "Month", "Day", "Time"], horizontal=True,)
-
-# if previous step is used, matches view option to df column
-VIEW_COL = {
-    "Year":"year",
-    "Month":"month",
-    "Day":"day",
-    "Time":"hour",}
-
-# groups the filtered data by the chosen time column, then gives average consumption
-col = VIEW_COL[view]
-values = filtered.groupby(col)["consumption_kwh"].mean().sort_index()
-
-# A slot is "peak" if its consumption is above mean + 0.75 × std deviation.
-# 0.75 is the sensitivity — higher = fewer peaks, lower = more peaks.
-mean = values.mean()
-std = values.std()
-threshold = np.percentile(values, 75)
-peaks = values >= threshold   
-
-# defines diplayed values as kpi-s
-kpis = {
-    "total_points": len(filtered),
-    "peak_slot": values.idxmax(),
-    "max_value": values.max(),
-    "threshold": threshold,}
-
-# adds a colour for below peak value and peak value
-NORMAL_COLOR = "#2475B0"
-PEAK_COLOR   = "#DC3C28"
-
-# defines when each color is shown: 
-seg_colors = []
-for i in range(len(values) - 1):
-    left_peak  = peaks.iloc[i]
-    right_peak = peaks.iloc[i + 1]
-    seg_colors.append(PEAK_COLOR if (left_peak or right_peak) else NORMAL_COLOR)
-
-# defines months' names 
-MONTH_NAMES = ["January","February","March","April","May","June", "July","August","September",
-               "October","November","December"]
-
-# converts months format from numbers to text
-def slot_to_label(slot, view):
-    if view == "Month":
-        return MONTH_NAMES[int(slot) - 1]
-# converts hour format from hours to hours & minutes (incl 15/30/45)
-    if view == "Time":
-        return f"{int(slot):02d}:00"
-
-    return str(int(slot))
-
-# converts months format from number to text in x axis
-x_labels = [slot_to_label(s, view) for s in values.index]
-x_pos = list(range(len(values)))
-
-# st.columns splits the page into equal-width columns side by side
-# st.metric renders a labeled number card
-peak_slot_label = slot_to_label(kpis["peak_slot"], view)
-peak_slot_label = slot_to_label(values.idxmax(), view)
-n_peaks = int(peaks.sum())
-
-
+# Filters at the top in columns
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Selections included", f"{kpis['total_points']:,}")
-col2.metric("Most active period", peak_slot_label)
-col3.metric("Highest usage level", f"{kpis['max_value']:.2f} kWh")
-col4.metric("High usage threshold", f"{kpis['threshold']:.2f} kWh")
 
-fig, ax = plt.subplots(figsize=(12, 5)) 
+with col1:
+    st.subheader("📅 Date Range")
+    date_range = st.date_input(
+        "Select dates",
+        value=(df['date'].min().date(), df['date'].max().date()),
+        min_value=df['date'].min().date(),
+        max_value=df['date'].max().date(),
+        label_visibility="collapsed"
+    )
 
-ax.axhline(
-    threshold,
-    linestyle="--", linewidth=1,
-    color=PEAK_COLOR, alpha=0.45,)
+with col2:
+    st.subheader("🌍 Season(s)")
+    seasons = st.multiselect(
+        "Select seasons",
+        options=df['season'].unique(),
+        default=['Spring'],
+        label_visibility="collapsed"
+    )
 
-y = values.values   # plain numpy array — easier to index in a loop
-for i, color in enumerate(seg_colors):
-    ax.plot(
-        [i, i + 1], [y[i], y[i + 1]],  # x: two adjacent positions; y: their values
-        color=color, linewidth=2, solid_capstyle="round",)
-    
+with col3:
+    st.subheader("📆 Day Type")
+    day_type = st.radio(
+        "Choose day type",
+        options=["All", "Weekdays", "Weekends"],
+        label_visibility="collapsed",
+        horizontal=True
+    )
 
-for i, (val, is_peak) in enumerate(zip(y, peaks)):
-    ax.plot(
-        i, val, "o",
-        color=PEAK_COLOR if is_peak else NORMAL_COLOR,
-        markersize=4, zorder=5,)
-    
-# 9e. X-axis ticks and labels
-ax.set_xticks(x_pos)
-ax.set_xticklabels(x_labels, fontsize=9)
- 
-# 9f. Axis and chart labels
-ax.set_xlabel(view, fontsize=11)
-ax.set_ylabel("Avg consumption (kWh)", fontsize=11)
+with col4:
+    st.subheader("📦 Segment(s)")
+    segment = st.multiselect(
+        "Select segments",
+        options=sorted(df['client_segment'].unique()),
+        default=['S'],
+        label_visibility="collapsed"
+    )
 
-# sets the y axis starting point
-ax.set_ylim(bottom=0)
- 
-# Build a title that reflects the active filters
-hh_label = "All households" if len(sel_households) == len(all_households) \
-           else f"{len(sel_households)} household(s)"
-ax.set_title(f"Average consumption by {view.lower()} — {hh_label}", fontsize=13)
- 
-# custom legend — manually build entries so we control exactly what appears
-legend_entries = [
-    mpatches.Patch(color=NORMAL_COLOR, label="Normal"),
-    mpatches.Patch(color=PEAK_COLOR, label=f"Peak (top 25% >{threshold:,.2f} kWh)")]
-ax.legend(handles=legend_entries, loc="upper left", fontsize=9)
+st.markdown("---")
+
+# Apply filters
+filtered_df = df[
+    (df['date'].dt.date >= date_range[0]) &
+    (df['date'].dt.date <= date_range[1]) &
+    (df['season'].isin(seasons) if seasons else True) &
+    (df['client_segment'].isin(segment) if segment else True)
+]
+
+if day_type == "Weekdays":
+    filtered_df = filtered_df[~filtered_df['is_weekend']]
+elif day_type == "Weekends":
+    filtered_df = filtered_df[filtered_df['is_weekend']]
+
+# Display metrics
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric("Total Records", len(filtered_df))
+with col2:
+    st.metric("Total Consumption (kWh)", f"{filtered_df['consumption_kwh'].sum():.2f}")
+with col3:
+    st.metric("Avg Consumption (kWh)", f"{filtered_df['consumption_kwh'].mean():.2f}")
+
+st.markdown("---")
+
+st.subheader("Consumption Trends")
+
+# Display KPI metrics at top
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    segment_avg = filtered_df.groupby('client_segment')['consumption_kwh'].mean()
+    if len(segment_avg) > 0:
+        st.metric("Avg by Selected Segment", f"{segment_avg.iloc[0]:.3f} kWh")
+
+with col2:
+    season_avg = filtered_df.groupby('season')['consumption_kwh'].mean()
+    if len(season_avg) > 0:
+        st.metric("Avg by Selected Season", f"{season_avg.iloc[0]:.3f} kWh")
+
+with col3:
+    day_avg = filtered_df.groupby('day_of_week')['consumption_kwh'].mean()
+    st.metric("Avg Consumption (Day)", f"{day_avg.mean():.3f} kWh")
+
+with col4:
+    hour_avg = filtered_df.groupby('hour')['consumption_kwh'].mean()
+    st.metric("Avg Consumption (Hour)", f"{hour_avg.mean():.3f} kWh")
+
+st.markdown("---")
+
+# Create graphs
+fig, axes = plt.subplots(2, 2, figsize=(14, 8))
+
+# ===== SEGMENT GRAPH =====
+all_segment_agg = df.groupby('client_segment')['consumption_kwh'].mean()
+colors_segment = ['#e74c3c' if seg in segment else '#d3d3d3' for seg in all_segment_agg.index]
+axes[0, 0].bar(all_segment_agg.index, all_segment_agg.values, color=colors_segment)
+axes[0, 0].set_title('Average by Segment')
+
+# ===== SEASON GRAPH =====
+all_season_agg = df.groupby('season')['consumption_kwh'].mean()
+colors_season = ['#e74c3c' if s in seasons else '#d3d3d3' for s in all_season_agg.index]
+axes[0, 1].bar(all_season_agg.index, all_season_agg.values, color=colors_season)
+axes[0, 1].set_title('Average by Season')
+
+# ===== DAY OF WEEK =====
+day_agg = filtered_df.groupby('day_of_week')['consumption_kwh'].mean()
+axes[1, 0].bar(day_agg.index, day_agg.values, color='#e74c3c')
+axes[1, 0].set_title('Average by Day of Week')
+
+# ===== HOUR =====
+hour_agg = filtered_df.groupby('hour')['consumption_kwh'].mean()
+axes[1, 1].bar(hour_agg.index, hour_agg.values, color='#e74c3c')
+axes[1, 1].set_title('Average by Hour')
 
 plt.tight_layout()
- 
-# 10. Render the matplotlib figure inside Streamlit
-# use_container_width=True makes the chart fill the full page width
-st.pyplot(fig, use_container_width=True)
+st.pyplot(fig)

@@ -1,0 +1,20 @@
+plan_id,electricity_vendor_name,electricity_plan_name,monthly_price,margin_price,production_type,is_ending_fee
+spot-1,Alexela AS,Börsihinnaga elekter,2.02,0.00470,tavaline,FALSE
+spot-2,Alexela AS,Börsihinnaga elekter + roheline,2.02,0.00960,roheline,FALSE
+spot-3,Alexela AS,Kodupakett,5.99,0.00000,tavaline,FALSE
+spot-4,Alexela AS,Kodupakett + roheline,5.99,0.00490,roheline,FALSE
+spot-5,AS Elenger Grupp,Muutuv (Elenger),0.00,0.00670,tavaline,FALSE
+spot-6,AS Elenger Grupp,Muutuv + roheline (Elenger),0.00,0.01600,roheline,FALSE
+spot-7,Electric Terminal OÜ,Börsipakett ühisarvega,1.91,0.00540,tavaline,FALSE
+spot-8,Electric Terminal OÜ,Roheline börsipakett ühisarvega,1.91,0.00744,roheline,FALSE
+spot-9,Elektrum Eesti OÜ,Börsi Klõps,1.91,0.00533,kombineeritud,FALSE
+spot-10,Elektrum Eesti OÜ,Roheline Börsi Klõps,1.91,0.00781,roheline,FALSE
+spot-11,Enefit AS,Muutuv (Enefit),2.05,0.00500,tavaline,FALSE
+spot-12,Enefit AS,Muutuv + roheline (Enefit),2.05,0.00890,roheline,FALSE
+spot-13,Enefit AS,Hinnalaega börsipakett,3.99,0.00000,tavaline,TRUE
+spot-14,Enefit AS,Hinnalaega börsipakett + roheline,4.99,0.00000,roheline,TRUE
+spot-15,Sunly Retail OÜ,Marginaalivaba börsipakett S,3.00,0.00000,roheline,FALSE
+spot-16,Sunly Retail OÜ,Marginaalivaba börsipakett M,4.00,0.00000,roheline,FALSE
+spot-17,Sunly Retail OÜ,Marginaalivaba börsipakett L,6.00,0.00000,roheline,FALSE
+spot-18,Sunly Retail OÜ,Marginaalivaba börsipakett XL,9.00,0.00000,roheline,FALSE
+spot-19,Viru Elektrivõrgud OÜ,Viru Vaba,1.76,0.00558,tavaline,FALSE

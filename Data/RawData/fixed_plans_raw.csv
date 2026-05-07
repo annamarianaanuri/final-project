@@ -1,0 +1,61 @@
+plan_id,electricity_vendor_name,electricity_plan_name,monthly_price,kwh_price_day,kwh_price_night,production_type,contract_length_months,is_ending_fee
+fix-1,Alexela AS,Fikseeritud hinnaga elekter (6),2.02,0.11900,0.09900,tavaline,6,FALSE
+fix-10,Alexela AS,Tähtajaline fikseeritud hind + roheline (12),1.50,0.13690,0.11690,roheline,12,TRUE
+fix-2,Alexela AS,Tähtajaline fikseeritud hind (9),2.00,0.12300,0.09660,tavaline,9,TRUE
+fix-3,Alexela AS,Fikseeritud hinnaga elekter + roheline (6),2.02,0.12390,0.10390,roheline,6,FALSE
+fix-4,Alexela AS,Tähtajaline fikseeritud hind + roheline (9),2.00,0.12790,0.10150,roheline,9,TRUE
+fix-5,Alexela AS,Tähtajaline fikseeritud hind (36),1.50,0.12800,0.10800,tavaline,36,TRUE
+fix-6,Alexela AS,Paindlik fiks (12),2.00,0.11600,0.11600,tavaline,12,TRUE
+fix-7,Alexela AS,Tähtajaline fikseeritud hind (12),1.50,0.13200,0.11200,tavaline,12,TRUE
+fix-8,Alexela AS,Tähtajaline fikseeritud hind + roheline (36),1.50,0.13290,0.11290,roheline,36,TRUE
+fix-9,Alexela AS,Paindlik fiks + roheline (12),2.00,0.12090,0.12090,roheline,12,TRUE
+fix-11,AS Elenger Grupp,Kindel (36),0.00,0.13870,0.10210,tavaline,36,TRUE
+fix-12,AS Elenger Grupp,"Kindel (36, ööpäev)",0.00,0.12300,0.12300,tavaline,36,TRUE
+fix-13,AS Elenger Grupp,Kindel (24),0.00,0.14340,0.10550,tavaline,24,TRUE
+fix-14,AS Elenger Grupp,"Kindel (24, ööpäev)",0.00,0.12720,0.12720,tavaline,24,TRUE
+fix-15,AS Elenger Grupp,Kindel + roheline (36),0.00,0.14800,0.11140,roheline,36,TRUE
+fix-16,AS Elenger Grupp,Kindel (12),0.00,0.15020,0.11040,tavaline,12,TRUE
+fix-17,AS Elenger Grupp,"Kindel + roheline (36, ööpäev)",0.00,0.13230,0.13230,roheline,36,TRUE
+fix-18,AS Elenger Grupp,"Kindel (12, ööpäev)",0.00,0.13320,0.13320,tavaline,12,TRUE
+fix-19,AS Elenger Grupp,Kindel + roheline (24),0.00,0.15270,0.11480,roheline,24,TRUE
+fix-20,AS Elenger Grupp,"Kindel + roheline (24, ööpäev)",0.00,0.13650,0.13650,roheline,24,TRUE
+fix-21,AS Elenger Grupp,Kindel + roheline (12),0.00,0.15950,0.11970,roheline,12,TRUE
+fix-22,AS Elenger Grupp,"Kindel + roheline (12, ööpäev)",0.00,0.14250,0.14250,roheline,12,TRUE
+fix-23,Electric Terminal OÜ,Fikseeritud hind + ühisarve (6),1.91,0.12096,0.09504,tavaline,6,FALSE
+fix-24,Electric Terminal OÜ,"Fikseeritud hind + ühisarve (6, ööpäev)",1.91,0.10800,0.10800,tavaline,6,FALSE
+fix-25,Electric Terminal OÜ,"Fikseeritud hind + ühisarve, roheline (6)",1.91,0.10924,0.10924,roheline,6,FALSE
+fix-26,Electric Terminal OÜ,"Fikseeritud hind + ühisarve, roheline (6, ööpäev)",1.91,0.12235,0.09613,roheline,6,FALSE
+fix-27,Electric Terminal OÜ,"Fikseeritud hind + ühisarve (36, ööpäev)",1.91,0.12000,0.12000,tavaline,36,TRUE
+fix-28,Electric Terminal OÜ,Fiksteeritud hind + ühisarve (36),1.91,0.13444,0.10563,tavaline,36,TRUE
+fix-29,Electric Terminal OÜ,"Fikseeritud hind + ühisarve, roheline (36)",1.91,0.13582,0.10672,roheline,36,TRUE
+fix-30,Electric Terminal OÜ,"Fikseeritud hind + ühisarve (12, ööpäev)",1.91,0.13719,0.13719,tavaline,12,TRUE
+fix-31,Electric Terminal OÜ,Fikseeritud hind + ühisarve (12),1.91,0.15366,0.12073,tavaline,12,TRUE
+fix-32,Electric Terminal OÜ,"Fikseeritud hind + ühisarve, roheline (12, ööpäev)",1.91,0.13843,0.13843,roheline,12,TRUE
+fix-33,Electric Terminal OÜ,"Fikseeritud hind + ühisarve, roheline (12)",1.91,0.15505,0.12182,roheline,12,TRUE
+fix-34,Elektrum Eesti OÜ,Kasulik Klõps (36),1.91,0.13408,0.09846,kombineeritud,36,TRUE
+fix-35,Elektrum Eesti OÜ,Kasulik Klõps (6),1.91,0.13656,0.09828,kombineeritud,6,FALSE
+fix-36,Elektrum Eesti OÜ,Roheline klõps (36),1.91,0.13557,0.09940,roheline,36,TRUE
+fix-37,Elektrum Eesti OÜ,"Väike klõps (36, ööpäev)",1.91,0.11825,0.11825,kombineeritud,36,TRUE
+fix-38,Elektrum Eesti OÜ,"Väike klõps (6, ööpäev)",1.91,0.11955,0.11955,kombineeritud,6,FALSE
+fix-39,Elektrum Eesti OÜ,"Roheline klõps (36, ööpäev)",1.91,0.11973,0.11973,roheline,36,TRUE
+fix-40,Elektrum Eesti OÜ,Roheline klõps (6),1.91,0.14375,0.10547,roheline,6,TRUE
+fix-41,Elektrum Eesti OÜ,"Roheline Klõps (6, ööpäev)",1.91,0.12674,0.12674,roheline,6,TRUE
+fix-42,Elektrum Eesti OÜ,Kasulik Klõps (12),1.91,0.15205,0.10949,kombineeritud,12,TRUE
+fix-43,Elektrum Eesti OÜ,"Väike klõps (12, ööpäev)",1.91,0.13313,0.13313,kombineeritud,12,TRUE
+fix-44,Elektrum Eesti OÜ,Roheline Klõps (12),1.91,0.15808,0.11552,roheline,12,TRUE
+fix-45,Elektrum Eesti OÜ,"Roheline Klõps (12, ööpäev)",1.91,0.13915,0.13915,roheline,12,TRUE
+fix-46,Enefit AS,Kindel 6 (ööpäev),2.05,0.11300,0.11300,tavaline,6,FALSE
+fix-47,Enefit AS,Kindel 6,2.05,0.12660,0.09940,tavaline,6,FALSE
+fix-48,Enefit AS,Kindel 6 + roheline (ööpäev),2.05,0.11420,0.11420,roheline,6,FALSE
+fix-49,Enefit AS,Kindel 6 + roheline,2.05,0.12790,0.10050,roheline,6,FALSE
+fix-50,Enefit AS,Kindel 36 (ööpäev),2.05,0.11990,0.11990,tavaline,36,TRUE
+fix-51,Enefit AS,Kindel 36,2.05,0.13430,0.10550,tavaline,36,TRUE
+fix-52,Enefit AS,Kindel 36 + roheline (ööpäev),2.05,0.12150,0.12150,roheline,36,TRUE
+fix-53,Enefit AS,Kindel 36 + roheline,2.05,0.13610,0.10690,roheline,36,TRUE
+fix-54,Enefit AS,Kindel 12 (ööpäev),2.05,0.13250,0.13250,tavaline,12,TRUE
+fix-55,Enefit AS,Kindel 12,2.05,0.14840,0.11660,tavaline,12,TRUE
+fix-56,Enefit AS,Kindel 12 + roheline (ööpäev),2.05,0.13350,0.13350,roheline,12,TRUE
+fix-57,Enefit AS,Kindel 12 + roheline,2.05,0.14950,0.11750,roheline,12,TRUE
+fix-58,Viru Elektrivõrgud OÜ,"Viru Kindel (8, ööpäev)",1.49,0.12510,0.12510,tavaline,8,FALSE
+fix-59,Viru Elektrivõrgud OÜ,Viru Kindel (8),1.49,0.13580,0.11450,tavaline,8,FALSE
+fix-60,Viru Elektrivõrgud OÜ,Viru Kindel (12),1.49,0.14150,0.11920,tavaline,12,TRUE

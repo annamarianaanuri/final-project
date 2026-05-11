@@ -115,7 +115,7 @@ st.markdown("""
     
     The **total price** is the sum of all interval costs over the selected time window.
             
-    The data about the electricity plans used to calculate the total price is from 'https://elektrihind.ee/paketid/'.
+    The data about the electricity plans used to calculate the total price is from https://elektrihind.ee/paketid/.
             
     The data about the plans used is from **29th of April, 2026**.
             
@@ -316,7 +316,13 @@ fig.update_xaxes(
 )
 
 fig.update_yaxes(title_text="Total cost (€)", secondary_y=False)
-fig.update_yaxes(title_text="Consumption (kWh)", secondary_y=True)
+fig.update_yaxes(
+    secondary_y=True,
+    rangemode='tozero',
+    showticklabels=False,
+    title_text=None,
+    showgrid=False
+)
 
 st.plotly_chart(fig, use_container_width=True)
 

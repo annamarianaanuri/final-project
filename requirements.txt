@@ -4,8 +4,5 @@ duckdb
 numpy
 matplotlib
 seaborn
-pathlib
 plotly
 huggingface_hub
-os
-

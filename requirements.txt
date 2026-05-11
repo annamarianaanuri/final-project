@@ -8,3 +8,4 @@ plotly
 huggingface_hub
 holidays
 scikit-learn
+pyarrow

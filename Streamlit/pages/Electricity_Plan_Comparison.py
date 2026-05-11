@@ -26,7 +26,7 @@ households = [f"{size}-{i}" for size in ['s', 'm', 'l', 'xl'] for i in range(1, 
     #)
 
 # 2. Loading the data from Hugging Face
-@st.cache_data
+#@st.cache_data
 def load_data(household, start, end):
     all_files = list_repo_files(
         repo_id="rainerkoorem/electricity-plans",

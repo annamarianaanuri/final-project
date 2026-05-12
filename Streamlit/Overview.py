@@ -1,7 +1,6 @@
 import streamlit as st
 from PIL import Image
 
-
 # Browser tag title 
 st.set_page_config(page_title="Electricity Plan Optimizer", layout="wide")
 

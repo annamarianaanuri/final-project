@@ -26,7 +26,7 @@ While the client has internal hypotheses about which package types suit which cu
  evidence-based conclusions.""")
 
 # Overview
-st.subheader("Project Approach")
+st.subheader("Analysis Approach")
 st.write("""
 This project analyzes real consumption data of 40 households alongside historical market prices and 
 available electricity packages on Estonian market, ultimately providing a factual foundation for 
@@ -46,10 +46,17 @@ img_path = BASE_DIR / "Screenshot 2026-05-11 135520.png"
 img = Image.open(img_path)
 st.image(img, caption="Data lineage", width=600)
 
+
+"""
+what is streamlit?
+"""
+
+
 # Analysis Logic
-st.subheader("Analysis Logic & Methodology")
+st.subheader("Analysis Logic & Results")
 st.write("""
-**The result is an interactive dashboard to enable exploration across three key dimensions:**
+
+**The result is an interactive streamlit dashboard to enable exploration across three key dimensions:**
          
 **Consumption Pattern Visualization**
 - Uncover pattern predictability for plan suitability  
@@ -57,16 +64,11 @@ st.write("""
 **Customer Segment Analysis**
 - Filter and compare household groups (S, M, L, XL) by consumption characteristics
 - Identify which plan types suit which segments best
-         
 
 **Individual Household Cost Comparison**
 - Calculates total estimated costs for any household under all available spot and fixed-price plans
 - Identifies which plan type minimizes cost for each household profile
-         
 
-**Cost Savings Exploration**
-- Quantify potential savings by switching between plan types
-- Segment findings by household profile for targeted recommendations
 """)
 
 st.divider()

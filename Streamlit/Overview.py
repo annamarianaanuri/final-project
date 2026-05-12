@@ -46,12 +46,6 @@ img_path = BASE_DIR / "Screenshot 2026-05-11 135520.png"
 img = Image.open(img_path)
 st.image(img, caption="Data lineage", width=600)
 
-
-"""
-what is streamlit?
-"""
-
-
 # Analysis Logic
 st.subheader("Analysis Logic & Results")
 st.write("""

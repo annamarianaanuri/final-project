@@ -85,5 +85,17 @@ To make these findings actionable for the client’s team, an interactive Stream
 - Customer segment analysis — filter and compare household groups by consumption characteristics to identify which plan types suit which segments best
 - Cost savings exploration — see potential savings by switching between plan types, segmented by household profile
 
-### Key Findings & Outcomes
+### Analysis Results
 
+**The result is an interactive streamlit dashboard, enabling exploration across three key dimensions:**
+
+**Consumption Pattern Visualization**
+- Uncover pattern predictability for plan suitability
+
+**Customer Segment Analysis**
+- Filter and compare household groups (S, M, L, XL) by consumption characteristics
+- Identify which plan types suit which segments best
+
+**Individual Household Cost Comparison**
+- Calculates total estimated costs for any household under all available spot and fixed-price plans
+- Identifies which plan type minimizes cost for each household profile

@@ -341,7 +341,12 @@ if can_calculate_review:
     review_candidates["current_segment"] = review_candidates["current_segment"].str.upper()
     review_candidates["suggested_segment"] = review_candidates["suggested_segment"].str.upper()
     review_candidates["avg_daily_kwh"] = review_candidates["avg_daily_kwh"].round(2)
-    review_candidates["estimated_annual_kwh"] = review_candidates["estimated_annual_kwh"].round(2)
+
+    review_candidates["estimated_annual_kwh"] = (
+        review_candidates["estimated_annual_kwh"]
+        .round(0)
+        .astype(int)
+    )
 
     review_table = review_candidates[
         [
@@ -607,17 +612,30 @@ st.markdown(
 if not review_table.empty:
     review_table_display = review_table.drop(columns=["Needs larger segment"])
 
+    def format_annual_kwh(x):
+        x = int(round(x))
+        if abs(x) < 10000:
+            return f"{x}"
+        return f"{x:,.0f}".replace(",", " ")
+
     def highlight_upgrade_rows(row):
         if review_table.loc[row.name, "Needs larger segment"]:
-            return ["background-color: #E8F7EE; color: #14532D;"] * len(row)
+            return ["background-color: #FDECEC; color: #8A1F1F;"] * len(row)
         return [""] * len(row)
 
     styled_review_table = (
         review_table_display.style
         .format({
             "Average daily consumption, kWh": "{:.2f}",
-            "Estimated annual consumption, kWh": "{:.2f}"
+            "Estimated annual consumption, kWh": format_annual_kwh
         })
+        .set_properties(
+            subset=[
+                "Average daily consumption, kWh",
+                "Estimated annual consumption, kWh"
+            ],
+            **{"text-align": "right"}
+        )
         .apply(highlight_upgrade_rows, axis=1)
     )
 
@@ -631,6 +649,6 @@ else:
 
 st.markdown("""
 <div class="info-box">
-    ℹ️ Rows highlighted in green represent households whose suggested segment is larger than their current segment.
+    ℹ️ Rows highlighted in red represent households whose suggested segment is larger than their current segment.
 </div>
 """, unsafe_allow_html=True)

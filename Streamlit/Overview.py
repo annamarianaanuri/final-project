@@ -1,4 +1,5 @@
 import streamlit as st
+from pathlib import Path
 from PIL import Image
 
 # Browser tag title 
@@ -39,8 +40,10 @@ st.write("""
          - 4 source files joined into one dataframe using timestamp
          - transformed into a parquet file""")
 
+BASE_DIR = Path(__file__).resolve().parent
+img_path = BASE_DIR / "Screenshot 2026-05-11 135520.png"
 
-img = Image.open("../Screenshot 2026-05-11 135520.png")
+img = Image.open(img_path)
 st.image(img, caption="Data lineage", width=600)
 
 # Analysis Logic

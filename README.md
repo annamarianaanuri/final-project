@@ -1,5 +1,7 @@
 ## Selecting the Optimal Electricity Plan Based on Real Consumption Data 
-Vali-IT Andmetarkus!
+Vali-IT Andmetarkus!  
+
+Link to Streamlit - https://consumption-and-electricity-plan.streamlit.app/
 
 
 ### Overview of the customer and the problem statement
